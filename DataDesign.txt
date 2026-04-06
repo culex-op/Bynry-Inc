@@ -1,0 +1,43 @@
+Company
+  company_id (Primary Key)
+  company_name (String)
+
+Warehouse
+  warehouse_id (Primary Key)
+  company_id (Foreign Key referencing Company.company_id
+  location (String)
+  Relationship: 1-to-Many (One company, many warehouses)
+
+Supplier
+  supplier_id (Primary Key)
+  supplier_name (String)
+
+Product
+  product_id (Primary Key)
+  stock_keeping_unit (String, UNIQUE)
+  product_name (String)
+
+Supplier_Product (Supplier-Product Link)
+  supplier_id (Foreign Key referencing Supplier.supplier_id)
+  product_id (Foreign Key referencing Product.product_id)
+  unit_cost (Decimal)
+  Relationship: Many-to-Many
+
+Inventory (Inventory Junction)
+  product_id (Foreign Key referencing Product.product_id)
+  warehouse_id (Foreign Key referencing Warehouse.warehouse_id)
+  current_quantity (Integer)
+  (Composite Primary Key: product_id, warehouse_id)
+
+Inventory_Ledger (Inventory Ledger - Tracks changes)
+  ledger_id (Primary Key)
+  product_id (Foreign Key referencing Product.product_id)
+  warehouse_id (Foreign Key referencing Warehouse.warehouse_id)
+  quantity_change (Integer, e.g., +50, -2)
+  transaction_timestamp (Timestamp)
+
+Product_Bundle (Bill of Materials for Bundles)
+  parent_product_id (Foreign Key referencing Product.product_id)
+  child_product_id (Foreign Key referencing Product.product_id)
+  required_quantity (Integer)
+  (Composite Primary Key: parent_product_id, child_product_id)
